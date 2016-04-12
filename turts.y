@@ -37,9 +37,36 @@ typedef struct
 
 %%
 
+program : HATCH Fill SOUP	{printf("Program accepted\n");}
+		;
 
-S : NUMBER	{printf("Yo, I'm here!\n");}
-  ;
+Fill : Insts DecTurtle Commands
+	 ;
+
+Insts: INSTINCT ENDINSTINCT
+	 ;
+
+DecTurtle : DecTurtle NewTurtle
+		   | NewTurtle
+		   ;
+
+Commands : Commands Command
+		 | Command
+		 ;
+
+Command : NAME Order
+		;
+
+Order : NOTRAIL {printf("No Trail\n");}
+	  | TRAIL	{printf("Trail\n");}
+	  | LEFT	{printf("Turning Left\n");}
+      | RIGHT	{printf("Turning Right\n");}
+	  | FORWARD NUMBER {printf("Moving forward %d\n", $2.ival);}
+	  | COLOR COL	{printf("New color is %s\n", $2.str);}
+	  ;
+
+NewTurtle : TURTLE NAME {printf("New name! %s\n", $2.str);}
+		  ;
 
 %%
 

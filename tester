@@ -1,0 +1,9 @@
+hatch
+instinct
+endinstinct
+turtle Arlo
+turtle Lilo
+Arlo color purple
+Arlo right
+Arlo forward 10
+soup

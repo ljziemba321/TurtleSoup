@@ -1,0 +1,299 @@
+Terminals unused in grammar
+
+   NUM
+   IS
+   SHELL
+   ENDSHELL
+   DO
+   ENDDO
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: HATCH Fill SOUP
+
+    2 Fill: Insts DecTurtle Commands
+
+    3 Insts: INSTINCT ENDINSTINCT
+
+    4 DecTurtle: DecTurtle NewTurtle
+    5          | NewTurtle
+
+    6 Commands: Commands Command
+    7         | Command
+
+    8 Command: NAME Order
+
+    9 Order: NOTRAIL
+   10      | TRAIL
+   11      | LEFT
+   12      | RIGHT
+   13      | FORWARD NUMBER
+   14      | COLOR COL
+
+   15 NewTurtle: TURTLE NAME
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+HATCH (258) 1
+SOUP (259) 1
+TURTLE (260) 15
+NUM (261)
+COLOR (262) 14
+NOTRAIL (263) 9
+TRAIL (264) 10
+FORWARD (265) 13
+RIGHT (266) 12
+LEFT (267) 11
+IS (268)
+SHELL (269)
+ENDSHELL (270)
+DO (271)
+ENDDO (272)
+INSTINCT (273) 3
+ENDINSTINCT (274) 3
+COL (275) 14
+NUMBER (276) 13
+NAME (277) 8 15
+
+
+Nonterminals, with rules where they appear
+
+$accept (23)
+    on left: 0
+program (24)
+    on left: 1, on right: 0
+Fill (25)
+    on left: 2, on right: 1
+Insts (26)
+    on left: 3, on right: 2
+DecTurtle (27)
+    on left: 4 5, on right: 2 4
+Commands (28)
+    on left: 6 7, on right: 2 6
+Command (29)
+    on left: 8, on right: 6 7
+Order (30)
+    on left: 9 10 11 12 13 14, on right: 8
+NewTurtle (31)
+    on left: 15, on right: 4 5
+
+
+State 0
+
+    0 $accept: . program $end
+
+    HATCH  shift, and go to state 1
+
+    program  go to state 2
+
+
+State 1
+
+    1 program: HATCH . Fill SOUP
+
+    INSTINCT  shift, and go to state 3
+
+    Fill   go to state 4
+    Insts  go to state 5
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 6
+
+
+State 3
+
+    3 Insts: INSTINCT . ENDINSTINCT
+
+    ENDINSTINCT  shift, and go to state 7
+
+
+State 4
+
+    1 program: HATCH Fill . SOUP
+
+    SOUP  shift, and go to state 8
+
+
+State 5
+
+    2 Fill: Insts . DecTurtle Commands
+
+    TURTLE  shift, and go to state 9
+
+    DecTurtle  go to state 10
+    NewTurtle  go to state 11
+
+
+State 6
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 7
+
+    3 Insts: INSTINCT ENDINSTINCT .
+
+    $default  reduce using rule 3 (Insts)
+
+
+State 8
+
+    1 program: HATCH Fill SOUP .
+
+    $default  reduce using rule 1 (program)
+
+
+State 9
+
+   15 NewTurtle: TURTLE . NAME
+
+    NAME  shift, and go to state 12
+
+
+State 10
+
+    2 Fill: Insts DecTurtle . Commands
+    4 DecTurtle: DecTurtle . NewTurtle
+
+    TURTLE  shift, and go to state 9
+    NAME    shift, and go to state 13
+
+    Commands   go to state 14
+    Command    go to state 15
+    NewTurtle  go to state 16
+
+
+State 11
+
+    5 DecTurtle: NewTurtle .
+
+    $default  reduce using rule 5 (DecTurtle)
+
+
+State 12
+
+   15 NewTurtle: TURTLE NAME .
+
+    $default  reduce using rule 15 (NewTurtle)
+
+
+State 13
+
+    8 Command: NAME . Order
+
+    COLOR    shift, and go to state 17
+    NOTRAIL  shift, and go to state 18
+    TRAIL    shift, and go to state 19
+    FORWARD  shift, and go to state 20
+    RIGHT    shift, and go to state 21
+    LEFT     shift, and go to state 22
+
+    Order  go to state 23
+
+
+State 14
+
+    2 Fill: Insts DecTurtle Commands .
+    6 Commands: Commands . Command
+
+    NAME  shift, and go to state 13
+
+    $default  reduce using rule 2 (Fill)
+
+    Command  go to state 24
+
+
+State 15
+
+    7 Commands: Command .
+
+    $default  reduce using rule 7 (Commands)
+
+
+State 16
+
+    4 DecTurtle: DecTurtle NewTurtle .
+
+    $default  reduce using rule 4 (DecTurtle)
+
+
+State 17
+
+   14 Order: COLOR . COL
+
+    COL  shift, and go to state 25
+
+
+State 18
+
+    9 Order: NOTRAIL .
+
+    $default  reduce using rule 9 (Order)
+
+
+State 19
+
+   10 Order: TRAIL .
+
+    $default  reduce using rule 10 (Order)
+
+
+State 20
+
+   13 Order: FORWARD . NUMBER
+
+    NUMBER  shift, and go to state 26
+
+
+State 21
+
+   12 Order: RIGHT .
+
+    $default  reduce using rule 12 (Order)
+
+
+State 22
+
+   11 Order: LEFT .
+
+    $default  reduce using rule 11 (Order)
+
+
+State 23
+
+    8 Command: NAME Order .
+
+    $default  reduce using rule 8 (Command)
+
+
+State 24
+
+    6 Commands: Commands Command .
+
+    $default  reduce using rule 6 (Commands)
+
+
+State 25
+
+   14 Order: COLOR COL .
+
+    $default  reduce using rule 14 (Order)
+
+
+State 26
+
+   13 Order: FORWARD NUMBER .
+
+    $default  reduce using rule 13 (Order)
