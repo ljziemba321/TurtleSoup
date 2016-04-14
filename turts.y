@@ -37,35 +37,39 @@ typedef struct
 
 %%
 
-program : HATCH Fill SOUP	{printf("Program accepted\n");}
+program : HATCH Fill SOUP	{
+							printf("import turtle\n");
+							printf("wn = turtle.Screen()\nwn.bgcolor(\"skyblue\")\n");
+							printf("%s", $2.str);
+							}
 		;
 
-Fill : Insts DecTurtle Commands
+Fill : Insts DecTurtle Commands		{sprintf($$.str, "%s%s", $2.str, $3.str);}
 	 ;
 
 Insts: INSTINCT ENDINSTINCT
 	 ;
 
-DecTurtle : DecTurtle NewTurtle
-		   | NewTurtle
+DecTurtle : DecTurtle NewTurtle		{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		   | NewTurtle				{sprintf($$.str, $1.str);}
 		   ;
 
-Commands : Commands Command
-		 | Command
+Commands : Commands Command	{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | Command			{sprintf($$.str, $1.str);}
 		 ;
 
-Command : NAME Order
+Command : NAME Order	{sprintf($$.str, "%s.%s", $1.str, $2.str);}
 		;
 
-Order : NOTRAIL {printf("No Trail\n");}
-	  | TRAIL	{printf("Trail\n");}
-	  | LEFT	{printf("Turning Left\n");}
-      | RIGHT	{printf("Turning Right\n");}
-	  | FORWARD NUMBER {printf("Moving forward %d\n", $2.ival);}
-	  | COLOR COL	{printf("New color is %s\n", $2.str);}
+Order : NOTRAIL 		{printf("No Trail\n");}
+	  | TRAIL			{printf("Trail\n");}
+	  | LEFT NUMBER		{sprintf($$.str, "left(%d)\n", $2.ival);}
+      | RIGHT NUMBER	{sprintf($$.str, "right(%d)\n", $2.ival);}
+	  | FORWARD NUMBER 	{sprintf($$.str, "forward(%d)\n", $2.ival);}
+	  | COLOR COL		{printf("New color is %s\n", $2.str);}
 	  ;
 
-NewTurtle : TURTLE NAME {printf("New name! %s\n", $2.str);}
+NewTurtle : TURTLE NAME {sprintf($$.str, "%s = turtle.Turtle()\n%s.shape(\"turtle\")\n", $2.str, $2.str);}
 		  ;
 
 %%

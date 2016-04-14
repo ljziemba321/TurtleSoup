@@ -3,7 +3,6 @@ instinct
 endinstinct
 turtle Arlo
 turtle Lilo
-Arlo color purple
-Arlo right
+Arlo right 45
 Arlo forward 10
 soup
