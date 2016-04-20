@@ -19,7 +19,6 @@ typedef struct
 
 LETTER	[a-zA-Z]
 DIGIT	[0-9]
-
 %%
 
 hatch		{return HATCH;}
@@ -32,6 +31,7 @@ trail		{return TRAIL;}
 forward		{return FORWARD;}
 right		{return RIGHT;}
 left		{return LEFT;}
+turn		{return TURN;}
 is			{return IS;}
 shell		{return SHELL;}
 endshell	{return ENDSHELL;}
@@ -48,8 +48,7 @@ yellow		{ strcpy(yylval.str, yytext); return COL;}
 orange		{ strcpy(yylval.str, yytext); return COL;}
 purple		{ strcpy(yylval.str, yytext); return COL;}
 pink		{ strcpy(yylval.str, yytext); return COL;}
-
-{DIGIT}+	{ yylval.ival = atoi(yytext); return NUMBER;}
+{DIGIT}+	{ strcpy(yylval.str, yytext); return NUMBER;}
 {LETTER}+	{ strcpy(yylval.str, yytext); return NAME;}
 
 [ \t\n]

@@ -34,9 +34,11 @@ typedef struct
 %token COL
 %token NUMBER
 %token NAME
+%token TURN
+%token OP
+
 
 %%
-
 program : HATCH Fill SOUP	{
 							printf("import turtle\n");
 							printf("wn = turtle.Screen()\nwn.bgcolor(\"skyblue\")\n");
@@ -61,16 +63,37 @@ Commands : Commands Command	{sprintf($$.str, "%s%s", $1.str, $2.str);}
 Command : NAME Order	{sprintf($$.str, "%s.%s", $1.str, $2.str);}
 		;
 
-Order : NOTRAIL 		{printf("No Trail\n");}
-	  | TRAIL			{printf("Trail\n");}
-	  | LEFT NUMBER		{sprintf($$.str, "left(%d)\n", $2.ival);}
-      | RIGHT NUMBER	{sprintf($$.str, "right(%d)\n", $2.ival);}
-	  | FORWARD NUMBER 	{sprintf($$.str, "forward(%d)\n", $2.ival);}
-	  | COLOR COL		{printf("New color is %s\n", $2.str);}
+Order : NOTRAIL 		{sprintf($$.str, "penup()\n");}
+	  | TRAIL			{sprintf($$.str, "pendown()\n");}
+	  | LEFT			{sprintf($$.str, "left(90)\n");}
+      | RIGHT			{sprintf($$.str, "right(90)\n");}
+	  | TURN Expr		{if($2.ival > 0)
+							{sprintf($$.str,"right(%s)\n", $2.str);}
+						 else
+							{sprintf($$.str,"left(%s)\n", $2.str);}
+	  					}
+	  | FORWARD Expr 	{sprintf($$.str, "forward(%s)\n", $2.str);}
+	  | COLOR COL		{sprintf($$.str, "color(\"%s\")\n", $2.str);}
 	  ;
 
-NewTurtle : TURTLE NAME {sprintf($$.str, "%s = turtle.Turtle()\n%s.shape(\"turtle\")\n", $2.str, $2.str);}
+NewVar	  : NAME IS Expr{sprintf($$.str, "%s = %s\n", $1.str, $3.str);
+//		 				addVar($1.str);
+}
 		  ;
+
+NewTurtle : TURTLE NAME {sprintf($$.str, "%s = turtle.Turtle()\n%s.shape(\"turtle\")\n%s.color(\"green\")\n%s.speed(1)\n", $2.str, $2.str, $2.str, $2.str);}
+		  ;
+
+
+Expr	  : Expr '+' T {sprintf($$.str,"%s+%s", $1.str ,$3.str);}
+	      | T	   {sprintf($$.str,"%s", $1.str);}
+		  ;
+
+T		  : '(' Expr ')'{sprintf($$.str,"(%s)", $2.str);}
+	      |  NUMBER		{sprintf($$.str,"%s", $1.str);}
+		  ;
+
+
 
 %%
 

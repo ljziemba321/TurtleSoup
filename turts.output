@@ -1,0 +1,413 @@
+Nonterminals useless in grammar
+
+   NewVar
+
+
+Terminals unused in grammar
+
+   NUM
+   IS
+   SHELL
+   ENDSHELL
+   DO
+   ENDDO
+   OP
+
+
+Rules useless in grammar
+
+   21 NewVar: NAME IS Expr
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: HATCH Fill SOUP
+
+    2 Fill: Insts DecTurtle Commands
+
+    3 Insts: INSTINCT ENDINSTINCT
+
+    4 DecTurtle: DecTurtle NewTurtle
+    5          | NewTurtle
+
+    6 Commands: Commands Command
+    7         | Command
+
+    8 Command: NAME Order
+
+    9 Order: NOTRAIL
+   10      | TRAIL
+   11      | LEFT
+   12      | RIGHT
+   13      | TURN Expr
+   14      | FORWARD Expr
+   15      | COLOR COL
+
+   16 NewTurtle: TURTLE NAME
+
+   17 Expr: Expr '+' T
+   18     | T
+
+   19 T: '(' Expr ')'
+   20  | NUMBER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 19
+')' (41) 19
+'+' (43) 17
+error (256)
+HATCH (258) 1
+SOUP (259) 1
+TURTLE (260) 16
+NUM (261)
+COLOR (262) 15
+NOTRAIL (263) 9
+TRAIL (264) 10
+FORWARD (265) 14
+RIGHT (266) 12
+LEFT (267) 11
+IS (268)
+SHELL (269)
+ENDSHELL (270)
+DO (271)
+ENDDO (272)
+INSTINCT (273) 3
+ENDINSTINCT (274) 3
+COL (275) 15
+NUMBER (276) 20
+NAME (277) 8 16
+TURN (278) 13
+OP (279)
+
+
+Nonterminals, with rules where they appear
+
+$accept (28)
+    on left: 0
+program (29)
+    on left: 1, on right: 0
+Fill (30)
+    on left: 2, on right: 1
+Insts (31)
+    on left: 3, on right: 2
+DecTurtle (32)
+    on left: 4 5, on right: 2 4
+Commands (33)
+    on left: 6 7, on right: 2 6
+Command (34)
+    on left: 8, on right: 6 7
+Order (35)
+    on left: 9 10 11 12 13 14 15, on right: 8
+NewTurtle (36)
+    on left: 16, on right: 4 5
+Expr (37)
+    on left: 17 18, on right: 13 14 17 19
+T (38)
+    on left: 19 20, on right: 17 18
+
+
+State 0
+
+    0 $accept: . program $end
+
+    HATCH  shift, and go to state 1
+
+    program  go to state 2
+
+
+State 1
+
+    1 program: HATCH . Fill SOUP
+
+    INSTINCT  shift, and go to state 3
+
+    Fill   go to state 4
+    Insts  go to state 5
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 6
+
+
+State 3
+
+    3 Insts: INSTINCT . ENDINSTINCT
+
+    ENDINSTINCT  shift, and go to state 7
+
+
+State 4
+
+    1 program: HATCH Fill . SOUP
+
+    SOUP  shift, and go to state 8
+
+
+State 5
+
+    2 Fill: Insts . DecTurtle Commands
+
+    TURTLE  shift, and go to state 9
+
+    DecTurtle  go to state 10
+    NewTurtle  go to state 11
+
+
+State 6
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 7
+
+    3 Insts: INSTINCT ENDINSTINCT .
+
+    $default  reduce using rule 3 (Insts)
+
+
+State 8
+
+    1 program: HATCH Fill SOUP .
+
+    $default  reduce using rule 1 (program)
+
+
+State 9
+
+   16 NewTurtle: TURTLE . NAME
+
+    NAME  shift, and go to state 12
+
+
+State 10
+
+    2 Fill: Insts DecTurtle . Commands
+    4 DecTurtle: DecTurtle . NewTurtle
+
+    TURTLE  shift, and go to state 9
+    NAME    shift, and go to state 13
+
+    Commands   go to state 14
+    Command    go to state 15
+    NewTurtle  go to state 16
+
+
+State 11
+
+    5 DecTurtle: NewTurtle .
+
+    $default  reduce using rule 5 (DecTurtle)
+
+
+State 12
+
+   16 NewTurtle: TURTLE NAME .
+
+    $default  reduce using rule 16 (NewTurtle)
+
+
+State 13
+
+    8 Command: NAME . Order
+
+    COLOR    shift, and go to state 17
+    NOTRAIL  shift, and go to state 18
+    TRAIL    shift, and go to state 19
+    FORWARD  shift, and go to state 20
+    RIGHT    shift, and go to state 21
+    LEFT     shift, and go to state 22
+    TURN     shift, and go to state 23
+
+    Order  go to state 24
+
+
+State 14
+
+    2 Fill: Insts DecTurtle Commands .
+    6 Commands: Commands . Command
+
+    NAME  shift, and go to state 13
+
+    $default  reduce using rule 2 (Fill)
+
+    Command  go to state 25
+
+
+State 15
+
+    7 Commands: Command .
+
+    $default  reduce using rule 7 (Commands)
+
+
+State 16
+
+    4 DecTurtle: DecTurtle NewTurtle .
+
+    $default  reduce using rule 4 (DecTurtle)
+
+
+State 17
+
+   15 Order: COLOR . COL
+
+    COL  shift, and go to state 26
+
+
+State 18
+
+    9 Order: NOTRAIL .
+
+    $default  reduce using rule 9 (Order)
+
+
+State 19
+
+   10 Order: TRAIL .
+
+    $default  reduce using rule 10 (Order)
+
+
+State 20
+
+   14 Order: FORWARD . Expr
+
+    NUMBER  shift, and go to state 27
+    '('     shift, and go to state 28
+
+    Expr  go to state 29
+    T     go to state 30
+
+
+State 21
+
+   12 Order: RIGHT .
+
+    $default  reduce using rule 12 (Order)
+
+
+State 22
+
+   11 Order: LEFT .
+
+    $default  reduce using rule 11 (Order)
+
+
+State 23
+
+   13 Order: TURN . Expr
+
+    NUMBER  shift, and go to state 27
+    '('     shift, and go to state 28
+
+    Expr  go to state 31
+    T     go to state 30
+
+
+State 24
+
+    8 Command: NAME Order .
+
+    $default  reduce using rule 8 (Command)
+
+
+State 25
+
+    6 Commands: Commands Command .
+
+    $default  reduce using rule 6 (Commands)
+
+
+State 26
+
+   15 Order: COLOR COL .
+
+    $default  reduce using rule 15 (Order)
+
+
+State 27
+
+   20 T: NUMBER .
+
+    $default  reduce using rule 20 (T)
+
+
+State 28
+
+   19 T: '(' . Expr ')'
+
+    NUMBER  shift, and go to state 27
+    '('     shift, and go to state 28
+
+    Expr  go to state 32
+    T     go to state 30
+
+
+State 29
+
+   14 Order: FORWARD Expr .
+   17 Expr: Expr . '+' T
+
+    '+'  shift, and go to state 33
+
+    $default  reduce using rule 14 (Order)
+
+
+State 30
+
+   18 Expr: T .
+
+    $default  reduce using rule 18 (Expr)
+
+
+State 31
+
+   13 Order: TURN Expr .
+   17 Expr: Expr . '+' T
+
+    '+'  shift, and go to state 33
+
+    $default  reduce using rule 13 (Order)
+
+
+State 32
+
+   17 Expr: Expr . '+' T
+   19 T: '(' Expr . ')'
+
+    '+'  shift, and go to state 33
+    ')'  shift, and go to state 34
+
+
+State 33
+
+   17 Expr: Expr '+' . T
+
+    NUMBER  shift, and go to state 27
+    '('     shift, and go to state 28
+
+    T  go to state 35
+
+
+State 34
+
+   19 T: '(' Expr ')' .
+
+    $default  reduce using rule 19 (T)
+
+
+State 35
+
+   17 Expr: Expr '+' T .
+
+    $default  reduce using rule 17 (Expr)
