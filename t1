@@ -1,13 +1,13 @@
 hatch
-turtle a
-turtle b
-a notrail
-a forward 100
-a trail
-a color blue
-a forward 100
-b left
-b forward 100
-a right
-a forward 100
+
+turtle arlo;
+turtle lilo;
+num x;
+num y;
+
+arlo forward 10;
+lilo left;
+arlo turn 110;
+arlo forward 200;
+
 soup

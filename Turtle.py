@@ -1,1 +1,15 @@
-Variable x already in table, redeclaration not allowed
+import turtle
+wn = turtle.Screen()
+wn.bgcolor("red")
+arlo = turtle.Turtle()
+arlo.shape("turtle")
+arlo.color("green")
+arlo.speed(1)
+lilo = turtle.Turtle()
+lilo.shape("turtle")
+lilo.color("green")
+lilo.speed(1)
+arlo.forward(10)
+lilo.left(90)
+arlo.right(110)
+arlo.forward(200)
