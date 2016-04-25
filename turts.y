@@ -11,6 +11,10 @@ typedef struct
 }tstruct;
 
 #define YYSTYPE tstruct
+int iCount = 0;
+int i;
+char indents[500];
+
 
 %}
 
@@ -36,6 +40,7 @@ typedef struct
 %token NAME
 %token TURN
 %token OP
+%token NEG
 
 
 %%
@@ -46,51 +51,62 @@ program : HATCH Fill SOUP	{
 							}
 		;
 
-Fill : Insts DecTurtle Commands		{sprintf($$.str, "%s%s", $2.str, $3.str);}
+Fill : Insts Declars Commands		{sprintf($$.str, "%s%s", $2.str, $3.str);}
 	 ;
 
 Insts: INSTINCT ENDINSTINCT
 	 ;
 
-DecTurtle : DecTurtle NewTurtle		{sprintf($$.str, "%s%s", $1.str, $2.str);}
+Declars    : Declars NewTurtle		{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		   | Declars NewVar			{sprintf($$.str, $1.str);}
+		   | NewVar					{/*New vars added to list down in NewVar Rule*/}
 		   | NewTurtle				{sprintf($$.str, $1.str);}
 		   ;
 
-Commands : Commands Command	{sprintf($$.str, "%s%s", $1.str, $2.str);}
-		 | Command			{sprintf($$.str, $1.str);}
+Commands : Commands TurtCommand	{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | Commands VarIs		{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | Commands DoLoop		{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | DoLoop				{sprintf($$.str, $1.str);}
+		 | VarIs				{sprintf($$.str, $1.str);}
+		 | TurtCommand			{sprintf($$.str, $1.str); printf("%s\n", $1.str);}
 		 ;
 
-Command : NAME Order	{sprintf($$.str, "%s.%s", $1.str, $2.str);}
+DoLoop : DO {iCount++; tabs();} Expr Commands ENDDO {iCount--; tabs(); sprintf($$.str, "for(i=0; i<%s; i++):\n%s", $1.str, $2.str); printf("%s\n", $2.str);}
+	   ;
+
+TurtCommand : NAME Order	{sprintf($$.str, "%s.%s", $1.str, $2.str);}
 		;
 
 Order : NOTRAIL 		{sprintf($$.str, "penup()\n");}
 	  | TRAIL			{sprintf($$.str, "pendown()\n");}
 	  | LEFT			{sprintf($$.str, "left(90)\n");}
       | RIGHT			{sprintf($$.str, "right(90)\n");}
-	  | TURN Expr		{if($2.ival > 0)
-							{sprintf($$.str,"right(%s)\n", $2.str);}
-						 else
-							{sprintf($$.str,"left(%s)\n", $2.str);}
-	  					}
+	  | TURN Expr		{sprintf($$.str, "right(%s)\n", $2.str);}
+	  | TURN NEG Expr	{sprintf($$.str, "left(%s)\n", $3.str);}
 	  | FORWARD Expr 	{sprintf($$.str, "forward(%s)\n", $2.str);}
 	  | COLOR COL		{sprintf($$.str, "color(\"%s\")\n", $2.str);}
 	  ;
 
-NewVar	  : NAME IS Expr{sprintf($$.str, "%s = %s\n", $1.str, $3.str);
-//		 				addVar($1.str);
-}
+VarIs : NAME IS Expr	{sprintf($$.str, "%s = %s\n", $1.str, $3.str);}
+	  ;
+
+NewVar	  : NUM NAME {/*add this name to the list*/}
 		  ;
 
 NewTurtle : TURTLE NAME {sprintf($$.str, "%s = turtle.Turtle()\n%s.shape(\"turtle\")\n%s.color(\"green\")\n%s.speed(1)\n", $2.str, $2.str, $2.str, $2.str);}
 		  ;
 
 
-Expr	  : Expr '+' T {sprintf($$.str,"%s+%s", $1.str ,$3.str);}
-	      | T	   {sprintf($$.str,"%s", $1.str);}
+Expr	  : Expr OP T {sprintf($$.str,"%s %s %s", $1.str, $2.str, $3.str);}
+	   	  | Expr NEG T {sprintf($$.str, "%s %s %s", $1.str, $2.str, $3.str);}
+		  | Expr OP NEG T {sprintf($$.str, "%s %s %s%s", $1.str, $2.str, $3.str, $4.str);}
+		  | Expr NEG NEG T {sprintf($$.str, "%s %s %s%s", $1.str, $2.str, $3.str, $4.str);}
+		  | T	   {sprintf($$.str,"%s", $1.str);}
 		  ;
 
 T		  : '(' Expr ')'{sprintf($$.str,"(%s)", $2.str);}
 	      |  NUMBER		{sprintf($$.str,"%s", $1.str);}
+		  |  NAME		{sprintf($$.str, "%s", $1.str);}
 		  ;
 
 
@@ -100,5 +116,16 @@ T		  : '(' Expr ')'{sprintf($$.str,"(%s)", $2.str);}
 main()
 {
 	yyparse();
+}
+
+tabs()
+{
+	
+	sprintf(indents, "");
+	for(i = 0; i<iCount; i++)
+	{
+		sprintf(indents, "%s\t", indents);
+	}
+	printf("%s%d is cool\n", indents, iCount);
 }
 

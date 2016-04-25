@@ -66,7 +66,8 @@ extern int yydebug;
     NUMBER = 276,
     NAME = 277,
     TURN = 278,
-    OP = 279
+    OP = 279,
+    NEG = 280
   };
 #endif
 

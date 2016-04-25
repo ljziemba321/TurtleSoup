@@ -19,8 +19,12 @@ typedef struct
 
 LETTER	[a-zA-Z]
 DIGIT	[0-9]
+
 %%
 
+
+"+"|"*"|"/"|"%"		{strcpy(yylval.str, yytext); return OP;}
+"-"			{strcpy(yylval.str, yytext); return NEG; }
 hatch		{return HATCH;}
 soup		{return SOUP;}
 turtle		{return TURTLE;}
@@ -50,6 +54,7 @@ purple		{ strcpy(yylval.str, yytext); return COL;}
 pink		{ strcpy(yylval.str, yytext); return COL;}
 {DIGIT}+	{ strcpy(yylval.str, yytext); return NUMBER;}
 {LETTER}+	{ strcpy(yylval.str, yytext); return NAME;}
+
 
 [ \t\n]
 

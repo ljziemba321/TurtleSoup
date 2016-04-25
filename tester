@@ -6,6 +6,6 @@ turtle Lilo
 Arlo trail
 Arlo forward 100 + 10
 Arlo right
-Arlo turn -90
+Arlo turn 90
 Arlo forward 10000000
 soup

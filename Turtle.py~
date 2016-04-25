@@ -1,0 +1,10 @@
+import turtle
+wn = turtle.Screen()
+wn.bgcolor("skyblue")
+Arlo = turtle.Turtle()
+Arlo.shape("turtle")
+Arlo.color("green")
+Arlo.speed(1)
+Arlo.forward(((10 + 1) * -2) * 4 / 100)
+Arlo.left(90)
+Arlo.forward(100000000)

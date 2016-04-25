@@ -1,0 +1,12 @@
+hatch
+
+instinct
+endinstinct
+
+turtle arlo
+arlo forward 10
+do 2
+arlo forward 20
+enddo
+
+soup
