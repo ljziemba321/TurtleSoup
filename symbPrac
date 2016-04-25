@@ -1,0 +1,13 @@
+hatch
+
+instinct
+endinstinct
+
+num x
+turtle arlo
+
+arlo is 10
+x is arlo+10
+x is 10+y
+
+soup

@@ -1,0 +1,14 @@
+hatch
+instinct
+endinstinct
+
+turtle arlo
+
+do 10
+arlo shell 
+forward 100
+right
+endshell
+enddo
+
+soup

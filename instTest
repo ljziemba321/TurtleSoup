@@ -1,0 +1,41 @@
+hatch
+
+instinct triangle
+forward 100
+turn 120
+forward 100
+turn 120
+forward 100
+endinstinct
+
+instinct square
+forward 50
+left
+forward 100
+left
+forward 100
+left
+forward 100
+left
+forward 50
+endinstinct
+
+
+instinct square
+forward 50
+left
+forward 100
+left
+forward 100
+left
+forward 100
+left
+forward 50
+endinstinct
+
+turtle arlo
+turtle arlo
+arlo instinct triangle
+arlo instinct square
+
+soup
