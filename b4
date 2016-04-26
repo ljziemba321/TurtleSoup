@@ -1,0 +1,9 @@
+hatch
+
+turtle arlo;
+
+arlo shell
+	forward 10
+	right
+
+soup

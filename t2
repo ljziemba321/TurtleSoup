@@ -1,0 +1,70 @@
+hatch
+
+instinct hexagon
+	forward 100
+	turn 60
+	forward 100
+	turn 60
+	forward 100
+	turn 60
+	forward 100
+	turn 60
+	forward 100
+	turn 60
+	forward 100
+endinstinct
+
+instinct triangle
+	forward 45
+	turn -120
+	forward 45
+	turn -120
+	forward 45
+endinstinct
+
+turtle arlo;
+turtle lilo;
+num x;
+
+x is 123;
+arlo forward x*2;
+arlo left;
+lilo forward 123%100;
+arlo turn -20;
+
+arlo instinct hexagon;
+lilo turn 180;
+lilo instinct triangle;
+
+lilo shell
+	turn -900
+	forward 45
+	left
+	forward 100
+endshell;
+
+arlo turn 180;
+arlo instinct triangle;
+
+do 5
+	arlo shell
+		forward 50
+		right
+		left
+		left
+		forward 100
+	endshell;
+enddo;
+
+do 3
+	arlo forward 45;
+	do 2
+		lilo instinct hexagon;
+		arlo turn -x+35;
+	enddo;
+	do 3
+		arlo instinct triangle;
+	enddo;
+enddo;
+
+soup

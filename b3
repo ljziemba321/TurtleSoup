@@ -1,0 +1,8 @@
+hatch
+
+num x;
+num y;
+
+y is x/2;
+
+soup

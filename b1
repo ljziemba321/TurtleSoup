@@ -1,0 +1,9 @@
+hatch
+
+num x;
+turtle arlo;
+
+x is 40;
+arlo is 50;
+
+soup

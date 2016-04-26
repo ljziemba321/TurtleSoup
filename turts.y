@@ -19,7 +19,6 @@ char indents[25];
 char shellName[25];
 
 
-
 %}
 
 %token HATCH
@@ -61,6 +60,7 @@ program : HATCH Fill SOUP	{
 Fill : InstList Declars Commands		{sprintf($$.str, "%s%s%s", $1.str, $2.str, $3.str);}
 	 | Declars Commands					{sprintf($$.str, "%s%s", $1.str, $2.str);}
 	 | Declars							{sprintf($$.str, "%s", $1.str);}
+	 | 									{sprintf($$.str, "");}
 	 ;
 
 
@@ -74,39 +74,40 @@ Inst : INSTINCT {iCount++; tabs();} NAME InstOrderList ENDINSTINCT {iCount--; ta
 
 
 Declars : Declars NewTurtle		{sprintf($$.str, "%s%s", $1.str, $2.str);}
-		| Declars NewVar		{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		| Declars NewVar		{sprintf($$.str, "%s", $1.str);}
 		| NewVar				{/*Nothing to pass because python handles */}
 		| NewTurtle				{sprintf($$.str, $1.str);}
 		;
 
 
-Commands : Commands TurtCommand ';'	{sprintf($$.str, "%s%s", $1.str, $2.str);}
-		 | Commands VarIs ';'		{sprintf($$.str, "%s%s", $1.str, $2.str);}
-		 | Commands DoLoop ';'		{sprintf($$.str, "%s%s", $1.str, $2.str);}
-		 | Commands ShellCommand ';'{sprintf($$.str, "%s%s", $1.str, $2.str);}
-		 | Commands InstCommand ';'	{sprintf($$.str, "%s%s", $1.str, $2.str);}
-		 | InstCommand ';'			{sprintf($$.str, $1.str);}
-		 | ShellCommand ';'			{sprintf($$.str, $1.str);} 
-		 | DoLoop ';'				{sprintf($$.str, $1.str);}
-		 | VarIs ';'				{sprintf($$.str, $1.str);}
-		 | TurtCommand ';'			{sprintf($$.str, $1.str);}
+Commands : Commands TurtCommand 	{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | Commands VarIs 			{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | Commands DoLoop			{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | Commands ShellCommand 	{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | Commands InstCommand 	{sprintf($$.str, "%s%s", $1.str, $2.str);}
+		 | InstCommand 				{sprintf($$.str, $1.str);}
+		 | ShellCommand 			{sprintf($$.str, $1.str);} 
+		 | DoLoop					{sprintf($$.str, $1.str);}
+		 | VarIs 					{sprintf($$.str, $1.str);}
+		 | TurtCommand	 			{sprintf($$.str, $1.str);}
 		 ;
 
 
-InstCommand : NAME INSTINCT NAME	{if(inTab($1.str) == 1 && inTab($3.str) == 3){sprintf($$.str, "%s%s(%s)\n", indents, $3.str, $1.str);}
+InstCommand : NAME INSTINCT NAME ';'{if(inTab($1.str) == 1 && inTab($3.str) == 3){sprintf($$.str, "%s%s(%s)\n", indents, $3.str, $1.str);}
 		   							 else{printf("Instinct/Turtle name not declared!!!\n"); exit(1);}}
 		    ;
 
 
-DoLoop : DO 	{iCount++; tabs();} Expr Commands ENDDO {iCount--; tabs(); sprintf($$.str, "%sfor i in range(0, %s):\n%s", indents, $3.str, $4.str);}
+DoLoop : DO 	{iCount++; tabs();} Expr Commands ENDDO ';' {iCount--; tabs(); sprintf($$.str, "%sfor i in range(0, %s):\n%s", indents, $3.str, $4.str);}
 	   ;
 
 
-TurtCommand : NAME Order	{sprintf($$.str, "%s%s.%s", indents, $1.str, $2.str);}
+TurtCommand : NAME Order ';' {if(inTab($1.str) == 1){sprintf($$.str, "%s%s.%s", indents, $1.str, $2.str);}
+							  else{printf("Turtle %s NOT declared or Variable %s is of wrong type\n", $1.str, $1.str); exit(1);}}
 		    ;
 
 
-ShellCommand : NAME 	{if(inTab($1.str) == 1){sprintf(shellName, $1.str);}} SHELL ShellOrderList ENDSHELL {sprintf($$.str, $4.str);}
+ShellCommand : NAME 	{if(inTab($1.str) == 1){sprintf(shellName, $1.str);}} SHELL ShellOrderList ENDSHELL ';' {sprintf($$.str, $4.str);}
 			 ;
 
 
@@ -124,15 +125,14 @@ Order : NOTRAIL 		{sprintf($$.str, "penup()\n");}
 	  | TRAIL			{sprintf($$.str, "pendown()\n");}
 	  | LEFT			{sprintf($$.str, "left(90)\n");}
       | RIGHT			{sprintf($$.str, "right(90)\n");}
-	  | TURN Expr		{sprintf($$.str, "right(%s)\n", $2.str);}
-	  | TURN NEG Expr	{sprintf($$.str, "left(%s)\n", $3.str);}
+	  | TURN Expr		{sprintf($$.str, "left(%s)\n", $2.str);}
+	  | TURN NEG Expr	{sprintf($$.str, "right(%s)\n", $3.str);}
 	  | FORWARD Expr 	{sprintf($$.str, "forward(%s)\n", $2.str);}
 	  | COLOR COL		{sprintf($$.str, "color(\"%s\")\n", $2.str);}
 	  ;
 
 
-VarIs : NAME IS Expr	{if(inTab($1.str) == 2){sprintf($$.str, "%s%s = %s\n", indents, $1.str, $3.str);}
-	  					     else{printf("Improper use of Name/Variable Undeclared!!  %s\n", $1.str);exit(1);}}
+VarIs : NAME IS Expr ';' {varsetVal($1.str); sprintf($$.str, "%s%s = %s\n", indents, $1.str, $3.str);}
 	  ;
 
 
@@ -155,8 +155,9 @@ Expr : Expr OP T		{sprintf($$.str,"%s %s %s", $1.str, $2.str, $3.str);}
 
 T : '(' Expr ')'	{sprintf($$.str,"(%s)", $2.str);}
   |  NUMBER			{sprintf($$.str,"%s", $1.str);}
-  |  NAME			{if(inTab($1.str) == 2){sprintf($$.str, "%s", $1.str);}
-					 else{printf("Variable Undeclared!!\n"); exit(1);}}
+  |  NAME			{if(inTab($1.str) == 4){sprintf($$.str, "%s", $1.str);}
+					 else if(inTab($1.str) == 2){printf("Variable %s is declared but has no value!!\n", $1.str); exit(1);}
+					 else{printf("Variable %s is Undeclared or Incorrect type!!\n",$1.str); exit(1);}}
   ;
 
 

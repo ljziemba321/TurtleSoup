@@ -6,7 +6,6 @@ num x;
 num y;
 
 arlo forward 100;
-arlo notrail;
 lilo turn 45;
 lilo forward 75+20;
 x is 100;
@@ -16,16 +15,6 @@ lilo right;
 lilo forward x;
 y is x - 45;
 arlo turn -y;
-arlo forward 50;
-x is 200;
-arlo trail;
-
-do 10
-	x is x-20;
-	arlo left;
-	lilo turn x;
-	arlo forward x;
-	lilo forward x/2;
-enddo;
+arlo forward 5000;
 
 soup

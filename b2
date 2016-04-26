@@ -1,0 +1,8 @@
+hatch
+
+turtle arlo;
+num x;
+
+x forward 10;
+
+soup

@@ -73,10 +73,10 @@ void varsetVal(char *str)
 	{
 		if (strcmp(tmp->name, str) == 0)
 		{
-			if(tmp->type == 2)
+			if(tmp->type == 2 || tmp->type == 4)
 			{
 				tmp->type = 4;
-				return void;
+				return;
 			}
 			else
 			{
@@ -92,7 +92,7 @@ void varsetVal(char *str)
 }
 
 
-}
+
 void printTab()
 {
 	entrylink tmp;
